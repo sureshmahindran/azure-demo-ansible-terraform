@@ -1,0 +1,28 @@
+---
+- hosts: allnodes
+  become: yes
+  tasks:
+  - name: Adding /etc/hosts entries
+    copy:
+      src: inventory/hosts
+      dest: /etc/hosts
+      mode: 0644
+  roles:
+  - repository
+  - packages
+
+- hosts: master
+  become: yes
+  roles:
+  - services
+  - rabbitmaster
+
+- hosts: slave
+  become: yes
+  roles:
+  - rabbitslave
+- hosts: master
+  become: yes
+  roles:
+  - admin_user 
+  -  hapolicy

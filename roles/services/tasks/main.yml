@@ -1,0 +1,11 @@
+---
+# tasks file for services
+- name: Start rabbitmq-server
+  systemd:
+    name: rabbitmq-server
+    state: started
+
+- name: Enable rabbitmq-server
+  systemd:
+    name: rabbitmq-server
+    enabled: yes

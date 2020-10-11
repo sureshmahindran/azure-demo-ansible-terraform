@@ -1,0 +1,43 @@
+---
+#Copy erlang file
+- name: make sure the erlang cookie file is same on all nodes
+  copy:
+    src: inventory/erlang_cache
+    dest: /var/lib/rabbitmq/.erlang.cookie
+    owner: rabbitmq
+    group: rabbitmq
+    mode: 0400
+
+# tasks file for rabbitslave
+- name: restart rabbitmq-server
+  systemd:
+    name: rabbitmq-server
+    state: restarted
+
+- name: rabbitmqctl stop_app
+  command:
+    cmd: sudo rabbitmqctl stop_app
+  register: rabbitmqctlstatus1
+- debug:
+    msg: "rabbitmqctl stop_app {{ rabbitmqctlstatus1 }} "
+
+- name: rabbitmqctl join_cluster rabbit@node01
+  command:
+    cmd: sudo rabbitmqctl join_cluster rabbit@node01
+  register: rabbitmqctlstatus2
+- debug:
+    msg: "{{ rabbitmqctlstatus2 }} "
+
+- name: rabbitmqctl start_app
+  command:
+    cmd: sudo rabbitmqctl start_app
+  register: rabbitmqctlstatus3
+- debug:
+    msg: "rabbitmqctl start_app: {{ rabbitmqctlstatus3 }} "
+
+- name: rabbitmqctl cluster_status
+  command:
+    cmd: sudo rabbitmqctl cluster_status
+  register: rabbitmqctlstatus4
+- debug:
+    msg: "rabbitmqctl status {{ rabbitmqctlstatus4 }} "

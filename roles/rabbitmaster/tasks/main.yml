@@ -1,0 +1,27 @@
+---
+- name: Execute a command rabbitmq-plugins
+  command: 
+    cmd: sudo rabbitmq-plugins enable rabbitmq_management
+  register: rabbitmqpluginsstatus
+    
+- debug:
+    msg: "The rabbitmq-plugins command status {{ rabbitmqpluginsstatus }} "
+
+- name: Setup ERLANG CACHE
+  command:
+    cmd: cat /var/lib/rabbitmq/.erlang.cookie
+  register: erlangcache
+
+- debug:
+    msg: "{{ erlangcache.stdout }} "
+
+- local_action: 
+        module: copy 
+        content: "{{ erlangcache.stdout }}"
+        dest: inventory/erlang_cache
+
+- name: restart rabbitmq-server
+  service:
+    name: rabbitmq-server
+    state: restarted
+

@@ -1,0 +1,22 @@
+---
+# tasks file for admin_user
+- name: Add a new user named 'hakase' with password
+  command:
+    cmd: sudo rabbitmqctl add_user hakase aqwew123@
+
+- name: Setup the 'hakase' user as an administrator.
+  command:
+    cmd: sudo rabbitmqctl set_user_tags hakase administrator
+
+- name: Grant the 'hakase' user permission to modify, write, and read all vhosts.
+  command:
+    cmd: sudo rabbitmqctl set_permissions -p / hakase ".*" ".*" ".*"
+
+- name: delete the default 'guest' user
+  command:
+    cmd: sudo rabbitmqctl delete_user guest
+
+- name: And check all available users
+  command:
+    cmd: sudo rabbitmqctl list_users
+

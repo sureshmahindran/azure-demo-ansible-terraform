@@ -1,0 +1,17 @@
+---
+# tasks file for hapolicy
+- name: ha policy named 'ha-all' which all queues on the RabbitMQ cluster will be mirroring to all nodes on the cluster
+  command:
+    cmd: sudo rabbitmqctl set_policy ha-all ".*" '{"ha-mode":"all"}'
+
+- name: ha policy named 'ha-two' which all queue name start with 'two.' will be mirroring to the two nodes on the cluster
+  command:
+    cmd: sudo rabbitmqctl set_policy ha-two "^two\." '{"ha-mode":"exactly","ha-params":2,"ha-sync-mode":"automatic"}'
+
+- name: Setup ha policy named 'ha-nodes' which all queue name start with 'nodes.' will be mirroring to two specific nodes 'node02' and 'node03' on the cluster.
+  command:
+    cmd: sudo rabbitmqctl set_policy ha-nodes "^nodes\." '{"ha-mode":"nodes","ha-params":["rabbit@node02", "rabbit@node03"]}'
+
+- name: Now check all available policies using the command below
+  command:
+    cmd: sudo rabbitmqctl list_policies
