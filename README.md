@@ -10,4 +10,4 @@ user: hakase
       
  Open your web browser and type the IP address of the node with port '15672'.
 
-http://<serverIP>:15672/
+http://serverip:15672/
