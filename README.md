@@ -7,3 +7,7 @@ Deploy azure with terraform and ansible
 Rabbitmq admin account:
 user: hakase 
       aqwew123@
+      
+ Open your web browser and type the IP address of the node with port '15672'.
+
+http://<serverIP>:15672/
